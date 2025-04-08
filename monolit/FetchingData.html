@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random User Data</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Random User Data</h2>
+    <table id="userTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Location</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <script>
+        // Fetch data from the API
+        fetch('https://randomuser.me/api/?results=10')
+            .then(response => response.json())
+            .then(data => {
+                // Get the array of users
+                const users = data.results;
+                const tableBody = document.querySelector('#userTable tbody');
+                
+                // Loop through the users and add rows to the table
+                users.forEach(user => {
+                    const row = document.createElement('tr');
+                    
+                    // Create table cells for each user
+                    const nameCell = document.createElement('td');
+                    nameCell.textContent = `${user.name.first} ${user.name.last}`;
+                    row.appendChild(nameCell);
+
+                    const emailCell = document.createElement('td');
+                    emailCell.textContent = user.email;
+                    row.appendChild(emailCell);
+
+                    const phoneCell = document.createElement('td');
+                    phoneCell.textContent = user.phone;
+                    row.appendChild(phoneCell);
+
+                    const locationCell = document.createElement('td');
+                    locationCell.textContent = `${user.location.city}, ${user.location.country}`;
+                    row.appendChild(locationCell);
+
+                    // Append the row to the table body
+                    tableBody.appendChild(row);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    </script>
+    
+</body>
+</html>
